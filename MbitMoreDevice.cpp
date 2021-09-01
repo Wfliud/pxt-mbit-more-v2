@@ -1,8 +1,8 @@
 
-#include "pxt.h"
-
+#include "CoolExtension.h"
 #include "MicroBit.h"
 #include "MicroBitConfig.h"
+#include "pxt.h"
 
 #if MICROBIT_CODAL
 // microphone sound level
@@ -93,7 +93,7 @@ MbitMoreDevice::MbitMoreDevice(MicroBit &_uBit) : uBit(_uBit) {
   // Reset compass
 #if MICROBIT_CODAL
   // On microbit-v2, re-calibration destract compass heading.
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
   if (uBit.buttonA.isPressed()) {
     uBit.compass.clearCalibration();
   }
@@ -183,7 +183,7 @@ void MbitMoreDevice::updateVersionData() {
   uint8_t *data = moreService->commandChBuffer;
 #if MICROBIT_CODAL
   data[0] = MbitMoreHardwareVersion::MICROBIT_V2;
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
   data[0] = MbitMoreHardwareVersion::MICROBIT_V1;
 #endif // NOT MICROBIT_CODAL
   data[1] = MbitMoreProtocol::MBIT_MORE_V2;
@@ -197,7 +197,7 @@ void MbitMoreDevice::updateVersionData() {
 void MbitMoreDevice::onBLEConnected(MicroBitEvent _e) {
 #if MICROBIT_CODAL
   fiber_sleep(100); // to change pull-mode in micro:bit v2
-#endif // MICROBIT_CODAL
+#endif              // MICROBIT_CODAL
   initializeConfig();
   uBit.display.stopAnimation(); // To stop display friendly name.
   uBit.display.print("M");
@@ -324,7 +324,7 @@ void MbitMoreDevice::onCommandReceived(uint8_t *data, size_t length) {
 #if MICROBIT_CODAL
         uBit.io.pin[pinIndex].isTouched();
         // uBit.io.pin[pinIndex].isTouched(TouchMode::Capacitative); // does not work?
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
         uBit.io.pin[pinIndex].isTouched();
 #endif // NOT MICROBIT_CODAL
         touchMode[pinIndex] = true;
@@ -335,6 +335,15 @@ void MbitMoreDevice::onCommandReceived(uint8_t *data, size_t length) {
             this,
             &MbitMoreDevice::onButtonChanged);
       }
+    }
+  } else if (command == MbitMoreCommand::CMD_MOTION) {
+    const int config = data[0] & 0b11111;
+    if (config == MbitMoreMotionCommand::CMD_MOTOR_SET) {
+      uint16_t port, speed, dir;
+      memcpy(&port, &(data[1]), 2);
+      memcpy(&speed, &(data[3]), 2);
+      memcpy(&dir, &(data[5]), 2);
+      CoolService::Cool_motor_drive(port, speed, dir);
     }
   }
 }
@@ -470,7 +479,7 @@ void MbitMoreDevice::updateAnalogIn(uint8_t *data, size_t pinIndex) {
   if (uBit.io.pin[pinIndex].isInput()) {
 #if MICROBIT_CODAL
     uBit.io.pin[pinIndex].setPull(PullMode::None);
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
     uBit.io.pin[pinIndex].setPull(PinMode::PullNone);
 #endif // NOT MICROBIT_CODAL
 
@@ -509,7 +518,7 @@ int MbitMoreDevice::sampleLightLevel() {
 void MbitMoreDevice::playTone(int period, int volume) {
 #if MICROBIT_CODAL
   MicroBitPin speakerPin = uBit.io.speaker;
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
   MicroBitPin speakerPin = uBit.io.pin[0];
 #endif // NOT MICROBIT_CODAL
   if (period <= 0 || volume == 0) {
@@ -528,7 +537,7 @@ void MbitMoreDevice::playTone(int period, int volume) {
 void MbitMoreDevice::stopTone() {
 #if MICROBIT_CODAL
   MicroBitPin speakerPin = uBit.io.speaker;
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
   MicroBitPin speakerPin = uBit.io.pin[0];
 #endif // NOT MICROBIT_CODAL
   speakerPin.setAnalogValue(0);
@@ -733,15 +742,15 @@ void MbitMoreDevice::listenPinEventOn(int pinIndex, int eventType) {
     uBit.io.pin[pinIndex].eventOn(MICROBIT_PIN_EVENT_ON_PULSE);
     // ?? Pull-mode is released and will not be reset in this thread. ??
     setPullMode(pinIndex, pullMode[pinIndex]); // does not work?
-#else // NOT MICROBIT_CODAL
+#else                                          // NOT MICROBIT_CODAL
     uBit.io.pin[pinIndex].eventOn(MICROBIT_PIN_EVENT_ON_PULSE);
-#endif // NOT MICROBIT_CODAL
+#endif                                         // NOT MICROBIT_CODAL
   } else if (eventType == MbitMorePinEventType::NONE) {
     uBit.io.pin[pinIndex].eventOn(MICROBIT_PIN_EVENT_NONE);
 #if MICROBIT_CODAL
     // ?? Pull-mode is released and will not be reset in this thread. ??
     setPullMode(pinIndex, pullMode[pinIndex]); // does not work?
-#endif // MICROBIT_CODAL
+#endif                                         // MICROBIT_CODAL
   }
 }
 
@@ -865,7 +874,7 @@ void MbitMoreDevice::setPullMode(int pinIndex, MbitMorePullMode pull) {
   default:
     break;
   }
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
   switch (pull) {
   case MbitMorePullMode::None:
     uBit.io.pin[pinIndex].setPull(PinMode::PullNone);
@@ -903,7 +912,7 @@ void MbitMoreDevice::setAnalogValue(int pinIndex, int value) {
 #if MICROBIT_CODAL
   // stable level is 0 .. 1022 in micro:bit v2,
   int validValue = value > 1022 ? 1022 : value;
-#else // NOT MICROBIT_CODAL
+#else  // NOT MICROBIT_CODAL
   // stable level is 0 .. 1021 in micro:bit v1.5,
   int validValue = value > 1021 ? 1021 : value;
 #endif // NOT MICROBIT_CODAL
@@ -938,7 +947,7 @@ void MbitMoreDevice::displayFriendlyName() {
  * 
  */
 void MbitMoreDevice::displayVersion() {
-  uBit.display.scrollAsync(ManagedString(" -M 0.2.3- "), 120);
+  uBit.display.scrollAsync(ManagedString(" COOL "), 120);
 }
 
 /**

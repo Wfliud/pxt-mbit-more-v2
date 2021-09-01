@@ -5,9 +5,9 @@
 
 #if MICROBIT_CODAL
 #define MBIT_MORE_USE_SERIAL 1
-#else // MICROBIT_CODAL
+#else                          // MICROBIT_CODAL
 #define MBIT_MORE_USE_SERIAL 0 // v1 has not enough memory space
-#endif // MICROBIT_CODAL
+#endif                         // MICROBIT_CODAL
 
 #define MBIT_MORE_DATA_RECEIVED 8000
 
@@ -35,6 +35,9 @@ enum MbitMoreCommand // 3 bits (0x00..0x07)
   CMD_DISPLAY = 0x02,
   CMD_AUDIO = 0x03,
   CMD_DATA = 0x04,
+  CMD_MOTION = 0x05,
+  CMD_VISION = 0x06,
+  CMD_WIFI = 0x07,
 };
 
 enum MbitMorePinCommand
@@ -52,7 +55,99 @@ enum MbitMoreDisplayCommand
   TEXT = 0x01,
   PIXELS_0 = 0x02,
   PIXELS_1 = 0x03,
+  CMD_SS_STOP_CON = 0x04,
+  CMD_SS_VOICE_CON = 0x05,
+  CMD_SS_SENDTTS = 0x06,
+  CMD_SS_SERACH = 0x07,
 };
+
+/**
+ * Enum for commannd about wifi
+ * @readonly
+ * @enum{number}
+ */
+enum MbitMoreWIFICommand
+{
+  CMD_SEGMENT_INIT = 0x00,
+  CMD_SEGMENT_SHOW = 0x01,
+  CMD_SEGMENT_SHOW2 = 0x02,
+  CMD_WIFI_INIT = 0x03,
+  CMD_WIFI_SETID = 0x04,
+  CMD_WIFI_GET = 0x05,
+  CMD_WIFI_SEND_I = 0x06,
+  CMD_WIFI_SEND_S = 0x07,
+};
+
+/**
+ * Enum for command about vision and sound
+ * @readonly
+ * @enum {number}
+ */
+enum MbitmoreVisionCommand
+{
+  CMD_WTR050_INIT = 0x00,
+  CMD_WTR050_RECORDSTART = 0x01,
+  CMD_WTR050_RECORDSTOP = 0x02,
+  CMD_WTR050_VOICEPLAY = 0x03,
+  CMD_WTR050_VOICESTOP = 0x04,
+  CMD_VS_INIT = 0x05,
+  CMD_VS_DET = 0x06,
+  CMD_VS_DET1 = 0x07,
+};
+
+/**
+ * Enum for command about motion
+ * @readonly
+ * @enum{number}
+ */
+enum MbitMoreMotionCommand
+{
+  CMD_MOTOR_SET = 0x00,
+  CMD_CAR_SET = 0x01,
+  CMD_ULTRASONIC_INIT = 0x02,
+  CMD_ULTRASONIC_READ = 0x03,
+}
+
+/**
+ * Enum for sub-command about configurations.
+ * @readonly
+ * @enum {number}
+ */
+enum MbitMoreConfig
+{
+  MIC = 0x01,
+  TOUCH = 0x02,
+  SS_INIT = 0x03,
+  SS_ACC = 0x04,
+  SS_WAIT = 0x05,
+  SS_MODE = 0x06,
+  SS_START_CON = 0x07,
+};
+
+/**
+ * Enum for sub-command about audio.
+ * @readonly
+ * @enum {number}
+ */
+enum MbitMoreAudioCommand
+{
+  STOP_TONE = 0x00,
+  PLAY_TONE = 0x01
+};
+
+/**
+ * Enum for index of CoolExtension pins
+ * @readonly
+ * @enum {number}
+ */
+enum MbitMoreCoolPinIndex
+{
+  P1 = 0,
+  P2 = 1,
+  P16 = 3,
+  P13_14 = 4,
+  P15_16 = 5,
+}
 
 /**
  * @brief Enum for write mode of display pixels.
@@ -124,26 +219,6 @@ enum MbitMorePinEvent
   FALL = 3,
   PULSE_HIGH = 4,
   PULSE_LOW = 5
-};
-
-/**
- * @brief Enum for sub-command about configurations.
- * 
- */
-enum MbitMoreConfig
-{
-  MIC = 0x01, // microphone
-  TOUCH = 0x02
-};
-
-/**
- * @brief Enum for sub-commands about audio.
- * 
- */
-enum MbitMoreAudioCommand
-{
-  STOP_TONE = 0x00,
-  PLAY_TONE = 0x01,
 };
 
 #endif // MBIT_MORE_COMMON_H
