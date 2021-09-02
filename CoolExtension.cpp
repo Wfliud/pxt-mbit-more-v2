@@ -4,7 +4,7 @@
 /**
  * Motor set
  */
-void ScratchMoreService::Cool_motor_drive(int exterpin, int speed, int dir) {
+void CoolService::Cool_motor_drive(int exterpin, int speed, int dir) {
   int motor_pin1, motor_pin2;
 
   switch (exterpin) {

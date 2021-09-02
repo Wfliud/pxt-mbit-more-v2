@@ -106,7 +106,7 @@ enum MbitMoreMotionCommand
   CMD_CAR_SET = 0x01,
   CMD_ULTRASONIC_INIT = 0x02,
   CMD_ULTRASONIC_READ = 0x03,
-}
+};
 
 /**
  * Enum for sub-command about configurations.
@@ -142,12 +142,12 @@ enum MbitMoreAudioCommand
  */
 enum MbitMoreCoolPinIndex
 {
-  P1 = 0,
-  P2 = 1,
-  P16 = 3,
-  P13_14 = 4,
-  P15_16 = 5,
-}
+  IO1 = 0,
+  IO2 = 1,
+  IO16 = 3,
+  IO13_14 = 4,
+  IO15_16 = 5,
+};
 
 /**
  * @brief Enum for write mode of display pixels.

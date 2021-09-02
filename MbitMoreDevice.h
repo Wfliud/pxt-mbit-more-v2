@@ -1,10 +1,10 @@
 #ifndef MBIT_MORE_DEVICE_H
 #define MBIT_MORE_DEVICE_H
 
-#include "pxt.h"
-
+#include "CoolExtension.h"
 #include "MicroBit.h"
 #include "MicroBitConfig.h"
+#include "pxt.h"
 
 #include "MbitMoreCommon.h"
 
@@ -36,7 +36,7 @@ using MbitMoreService = MbitMoreServiceDAL;
 #define MBIT_MORE_DATA_LABEL_SIZE 8
 #define MBIT_MORE_DATA_CONTENT_SIZE 11
 #endif // MICROBIT_CODAL
-
+CoolService *_CoolService;
 /**
  * @brief Button ID in MicrobitMore
  * This number is used to memory offset in state data.

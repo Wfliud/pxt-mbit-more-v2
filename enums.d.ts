@@ -142,11 +142,11 @@
 
     declare const enum MbitMoreCoolPinIndex
     {
-    P1 = 0,
-    P2 = 1,
-    P16 = 3,
-    P13_14 = 4,
-    P15_16 = 5,
+    IO1 = 0,
+    IO2 = 1,
+    IO16 = 3,
+    IO13_14 = 4,
+    IO15_16 = 5,
     }
 
 

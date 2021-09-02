@@ -89,7 +89,6 @@ public:
    */
   uint8_t txBuffer02[20];
 
-private:
   // Sending data to Scratch3.
   uint8_t txData[20];
 

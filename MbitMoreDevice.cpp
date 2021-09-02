@@ -25,7 +25,6 @@ int getMicLevel() {
   return min(0xff, scaled * 0xff / (MICROPHONE_MAX - MICROPHONE_MIN));
 }
 #endif // MICROBIT_CODAL
-
 /**
  * @brief Compute average value for the int array.
  *
@@ -343,7 +342,7 @@ void MbitMoreDevice::onCommandReceived(uint8_t *data, size_t length) {
       memcpy(&port, &(data[1]), 2);
       memcpy(&speed, &(data[3]), 2);
       memcpy(&dir, &(data[5]), 2);
-      CoolService::Cool_motor_drive(port, speed, dir);
+      _CoolService->Cool_motor_drive(port, speed, dir);
     }
   }
 }
